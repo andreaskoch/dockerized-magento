@@ -1,0 +1,40 @@
+{
+  "name": "andreaskoch/dockerized-magento",
+  "description": "Dockerized Magento Community Edition 1.9.x",
+  "license": "proprietary",
+  "homepage": "https://github.com/andreaskoch/dockerized-magento",
+  "require": {
+    "magento/core": "v1.9.1.0-patch1",
+    "aoepeople/aoe_scheduler": "v0.4.3",
+    "aschroder/smtp_pro": "v2.0.5",
+    "magento-hackathon/magento-composer-installer": "v2.1.1"
+  },
+  "require-dev": {
+    "aoepeople/aoe_profiler": "v0.3.0",
+    "aoepeople/aoe_templatehints": "v0.4.1",
+    "avstudnitz/scopehint": "dev-master#9fd3eb0978fa67b55f5756494569746119f3f2f6",
+    "phpunit/phpunit": "3.7.*",
+    "tim-reynolds/magento-qconfig": "1.0"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://packages.firegento.com"
+    }
+  ],
+  "extra": {
+    "magento-root-dir": "web",
+    "auto-append-gitignore": true
+  },
+  "config": {
+    "discard-changes": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "post-install-cmd": [
+    ],
+    "post-update-cmd": [
+    ]
+  }
+}

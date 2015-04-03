@@ -1,0 +1,83 @@
+server {
+    listen                      80 default_server;
+    listen                      443 default_server ssl;
+
+    ssl_certificate             ${SSL_CERTIFICATE_PATH};
+    ssl_certificate_key         ${SSL_CERTIFICATE_KEY_PATH};
+
+    client_max_body_size        10M;
+
+    root                        ${MAGENTO_ROOT};
+    index                       index.php;
+
+    # Serve images directly
+    location ~* ^.+\.(jpg|jpeg|gif|png|ico|css|zip|tgz|gz|rar|bz2|pdf|txt|tar|wav|bmp|rtf|js|flv|swf)$ {
+        root ${MAGENTO_ROOT};
+    }
+
+    location / {
+        index index.html index.php;
+        try_files $uri $uri/ @handler;
+        expires 30d;
+    }
+
+    location ^~ /app/                       { deny all; }
+    location ^~ /includes/                  { deny all; }
+    location ^~ /lib/                       { deny all; }
+    location ^~ /media/downloadable/        { deny all; }
+    location ^~ /pkginfo/                   { deny all; }
+    location ^~ /report/config.xml          { deny all; }
+    location ^~ /var/                       { deny all; }
+    location ^~ /downloader/                { deny all; }
+    location /var/export/                   { deny all; }
+
+    location  /. {
+        return 404;
+    }
+
+    location @handler {
+        rewrite / /index.php;
+    }
+
+    location ~ \.php/ {
+        rewrite ^(.*\.php)/ $1 last;
+    }
+
+    location ~ \.php$ {
+
+        ## Catch 404s that try_files miss
+        if (!-e $request_filename) {
+            rewrite / /index.php last;
+        }
+
+        fastcgi_split_path_info         ^(.+\.php)(/.+)$;
+
+        fastcgi_pass                    ${PHP_PORT_9000_TCP_ADDR}:${PHP_PORT_9000_TCP_PORT};
+        fastcgi_index                   index.php;
+
+        include fastcgi_params;
+        fastcgi_param                   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+        fastcgi_param                   MAGENTO_ROOT ${MAGENTO_ROOT};
+        fastcgi_param                   MAGE_IS_DEVELOPER_MODE ${MAGENTO_DEVELOPERMODE};
+
+        fastcgi_param                   REMOTE_ADDR $http_x_real_ip;
+        fastcgi_buffer_size             1024k;
+        fastcgi_buffers                 500 512k;
+        fastcgi_connect_timeout         1200;
+        fastcgi_send_timeout            1200;
+        fastcgi_read_timeout            1200;
+
+    }
+
+    rewrite ^/minify/([0-9]+)(/.*.(js|css))$ /lib/minify/m.php?f=$2&d=$1 last;
+    rewrite ^/skin/m/([0-9]+)(/.*.(js|css))$ /lib/minify/m.php?f=$2&d=$1 last;
+
+    location /lib/minify/ {
+        allow all;
+    }
+
+    gzip                on;
+    gzip_min_length     1000;
+    gzip_proxied        any;
+}

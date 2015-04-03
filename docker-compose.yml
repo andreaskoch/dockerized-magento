@@ -1,0 +1,45 @@
+web:
+  buid: docker-images/nginx
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+    - "php"
+  domainname: localhost
+  environment:
+    DOMAIN: localhost
+    MAGENTO_ROOT: /var/www/html/web
+    MAGENTO_DEVELOPERMODE: 1
+    SSL_CERTIFICATE_PATH: /etc/ssl/certs/ssl-cert-snakeoil.pem
+    SSL_CERTIFICATE_KEY_PATH: /etc/ssl/private/ssl-cert-snakeoil.key
+  volumes:
+    - ./logs/nginx:/var/log/nginx
+  volumes_from:
+    - media
+    - php
+php:
+  build: docker-images/php/5.5-dev
+  links:
+    - "cache:rediscache"
+    - "sessions:redissession"
+    - "solr:solr"
+    - "mysql:mysql"
+  volumes:
+    - .:/var/www/html
+mysql:
+  image: mysql
+  ports:
+    - "3306:3306"
+  environment:
+    - MYSQL_ROOT_PASSWORD=pw
+    - MYSQL_DATABASE=magento
+    - MYSQL_USER=magento
+    - MYSQL_PASSWORD=magento
+solr:
+  build: docker-images/solr
+  volumes:
+  - docker-images/solr/config/solr/conf:/usr/local/apache-solr-3.6.2/example/solr/conf
+cache:
+  image: redis:latest
+sessions:
+  image: redis:latest
