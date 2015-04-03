@@ -1,7 +1,7 @@
 {
   "name": "andreaskoch/dockerized-magento",
   "description": "Dockerized Magento Community Edition 1.9.x",
-  "license": "proprietary",
+  "license": "BSD-3-Clause",
   "homepage": "https://github.com/andreaskoch/dockerized-magento",
   "require": {
     "magento/core": "v1.9.1.0-patch1",
