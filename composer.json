@@ -14,6 +14,7 @@
     "aoepeople/aoe_templatehints": "v0.4.1",
     "avstudnitz/scopehint": "dev-master#9fd3eb0978fa67b55f5756494569746119f3f2f6",
     "phpunit/phpunit": "3.7.*",
+    "phpunit/php-invoker": "~1.1",
     "tim-reynolds/magento-qconfig": "1.0"
   },
   "repositories": [
