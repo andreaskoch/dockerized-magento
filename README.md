@@ -4,6 +4,7 @@ A dockerized version of "Magento Community Edition 1.9.x"
 
 ## Requirements
 
+- PHP and Composer for the installation of Magento
 - [docker](http://docs.docker.com/compose/install/#install-docker)
 - [docker-compose](http://docs.docker.com/compose/install/#install-compose)
 
