@@ -3,7 +3,7 @@
 set -eu
 
 templates_dir="/etc/nginx/sites-templates"
-outdir="/etc/nginx/sites-enabled"
+outdir="/etc/nginx/conf.d"
 
 function template_files() {
     find "${templates_dir}" \

@@ -1,5 +1,5 @@
-web:
-  buid: docker-images/nginx
+nginx:
+  build: docker-images/nginx
   ports:
     - "80:80"
     - "443:443"
@@ -13,9 +13,10 @@ web:
     SSL_CERTIFICATE_PATH: /etc/ssl/certs/ssl-cert-snakeoil.pem
     SSL_CERTIFICATE_KEY_PATH: /etc/ssl/private/ssl-cert-snakeoil.key
   volumes:
+    - /etc/ssl/certs/ssl-cert-snakeoil.pem:/etc/ssl/certs/ssl-cert-snakeoil.pem
+    - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/private/ssl-cert-snakeoil.key
     - ./logs/nginx:/var/log/nginx
   volumes_from:
-    - media
     - php
 php:
   build: docker-images/php/5.5-dev
