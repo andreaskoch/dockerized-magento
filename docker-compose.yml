@@ -1,3 +1,11 @@
+installer:
+  build: docker-images/installer
+  environment:
+    MAGENTO_ROOT: /var/www/html/web
+  volumes_from:
+    - nginx
+  links:
+    - "mysql"
 nginx:
   build: docker-images/nginx
   ports:

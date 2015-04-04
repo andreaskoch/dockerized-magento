@@ -1,4 +1,4 @@
-FROM php:5.5-fpm
+FROM php:5.6
 
 # Configure PHP
 RUN buildDeps=" \
@@ -19,16 +19,8 @@ RUN buildDeps=" \
     mcrypt \
     mysql \
     pdo_mysql \
-    soap \
     zip \
-    opcache \
     && apt-get purge -y --auto-remove
-
-COPY php.ini /usr/local/etc/php/php.ini
-COPY php-fpm.conf /usr/local/etc/
-
-# Make sure the volume mount point is empty
-RUN rm -rf /var/www/html/*
 
 # Install magerun
 RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
@@ -36,4 +28,13 @@ RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/
     cp ./magerun /usr/local/bin/ && \
     rm ./magerun && \
     apt-get update && \
-    apt-get install -qy mysql-client
+    apt-get install -qy mysql-client && \
+    apt-get purge -y --auto-remove
+
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=bin
+
+# Add the installer
+COPY install.sh /bin/install.sh
+
+ENTRYPOINT ["/bin/bash", "-c", "/bin/install.sh"]
