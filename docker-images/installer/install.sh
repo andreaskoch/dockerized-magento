@@ -1,7 +1,5 @@
 #!/bin/bash
 
-MAGENTO_ROOT=/var/www/html/web
-
 # Check if the MAGENTO_ROOT direcotry has been specified
 if [ -z "$MAGENTO_ROOT" ]
 then

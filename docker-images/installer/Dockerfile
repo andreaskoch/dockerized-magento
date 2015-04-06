@@ -36,5 +36,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --filename=composer --in
 
 # Add the installer
 COPY install.sh /bin/install.sh
+RUN chmod +x /bin/install.sh
 
-ENTRYPOINT ["/bin/bash", "-c", "/bin/install.sh"]
+ENTRYPOINT ["/bin/install.sh"]
