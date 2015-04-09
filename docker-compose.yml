@@ -6,8 +6,8 @@ installer:
     MYSQL_HOST: mysql
     MYSQL_ROOT_PASSWORD: pw
     MYSQL_DATABASE: magento
-    MYSQL_USER: magento
-    MYSQL_PASSWORD: magento
+    MYSQL_USER: root
+    MYSQL_PASSWORD: pw
   volumes_from:
     - nginx
   links:
@@ -47,9 +47,6 @@ mysql:
     - "3306:3306"
   environment:
     MYSQL_ROOT_PASSWORD: pw
-    MYSQL_DATABASE: magento
-    MYSQL_USER: magento
-    MYSQL_PASSWORD: magento
 solr:
   build: docker-images/solr
   volumes:
