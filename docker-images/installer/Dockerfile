@@ -22,6 +22,8 @@ RUN buildDeps=" \
     zip \
     && apt-get purge -y --auto-remove
 
+COPY php.ini /usr/local/etc/php/php.ini
+
 # Install magerun
 RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
     chmod +x ./magerun && \
@@ -30,6 +32,9 @@ RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/
     apt-get update && \
     apt-get install -qy mysql-client && \
     apt-get purge -y --auto-remove
+
+# Add a custom magerun configuration
+COPY n98-magerun.yaml /etc/n98-magerun.yaml
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=bin

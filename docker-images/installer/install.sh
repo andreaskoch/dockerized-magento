@@ -23,5 +23,14 @@ fi
 
 echo "Installing Magento"
 
-# Switch to the magento root folder
-cd $MAGENTO_ROOT
+magerun install \
+ --dbHost=mysql \
+ --dbUser="$MYSQL_USER" \
+ --dbPass="$MYSQL_ROOT_PASSWORD" \
+ --dbName="$MYSQL_DATABASE" \
+ --dbPort="3306" \
+ --magentoVersionByName="magento-ce-1.9.1.0-dropbox" \
+ --installationFolder="$MAGENTO_ROOT" \
+ --installSampleData=yes \
+ --baseUrl="http://$DOMAIN/" \
+ --skip-root-check

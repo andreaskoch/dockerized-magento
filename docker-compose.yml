@@ -1,7 +1,13 @@
 installer:
   build: docker-images/installer
   environment:
+    DOMAIN: localhost
     MAGENTO_ROOT: /var/www/html/web
+    MYSQL_HOST: mysql
+    MYSQL_ROOT_PASSWORD: pw
+    MYSQL_DATABASE: magento
+    MYSQL_USER: magento
+    MYSQL_PASSWORD: magento
   volumes_from:
     - nginx
   links:
@@ -40,10 +46,10 @@ mysql:
   ports:
     - "3306:3306"
   environment:
-    - MYSQL_ROOT_PASSWORD=pw
-    - MYSQL_DATABASE=magento
-    - MYSQL_USER=magento
-    - MYSQL_PASSWORD=magento
+    MYSQL_ROOT_PASSWORD: pw
+    MYSQL_DATABASE: magento
+    MYSQL_USER: magento
+    MYSQL_PASSWORD: magento
 solr:
   build: docker-images/solr
   volumes:
