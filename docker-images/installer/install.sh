@@ -34,3 +34,14 @@ magerun install \
  --installSampleData=yes \
  --baseUrl="http://$DOMAIN/" \
  --skip-root-check
+
+echo "Install modules"
+cd /var/www/html
+composer update
+
+echo "Installation fininished"
+
+while :
+do
+	sleep 1
+done

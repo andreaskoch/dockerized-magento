@@ -4,17 +4,15 @@
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/andreaskoch/dockerized-magento",
   "require": {
-    "magento/core": "v1.9.1.0-patch1",
     "aoepeople/aoe_scheduler": "v0.4.3",
     "aschroder/smtp_pro": "v2.0.5",
-    "magento-hackathon/magento-composer-installer": "v2.1.1"
+    "magento-hackathon/magento-composer-installer": "v2.1.1",
+    "jeroenvermeulen/solarium": "v1.6.9-beta"
   },
   "require-dev": {
     "aoepeople/aoe_profiler": "v0.3.0",
     "aoepeople/aoe_templatehints": "v0.4.1",
     "avstudnitz/scopehint": "dev-master#9fd3eb0978fa67b55f5756494569746119f3f2f6",
-    "phpunit/phpunit": "3.7.*",
-    "phpunit/php-invoker": "~1.1",
     "tim-reynolds/magento-qconfig": "1.0"
   },
   "repositories": [
