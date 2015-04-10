@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+/**
+ * JeroenVermeulen_Solarium
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this Module to
+ * newer versions in the future.
+ *
+ * @category    JeroenVermeulen
+ * @package     JeroenVermeulen_Solarium
+ * @copyright   Copyright (c) 2014 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<!--suppress XmlUnboundNsPrefix -->
+<schema name="magento_fulltext" version="101">
+
+    <types>
+        <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+        <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
+        <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+        <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+            <analyzer>
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.ShingleFilterFactory" maxShingleSize="3" outputUnigrams="true"/>
+            </analyzer>
+        </fieldType>
+    </types>
+
+    <fields>
+        <!-- Magento Fulltext Id, uniqueKey needs to be a string for QueryElevationComponent  -->
+        <field name="id" type="string" indexed="true" stored="true" required="true"/>
+
+        <!-- Magento Product Id, must be a string to be able to group by in Solr 3.x -->
+        <field name="product_id" type="string" indexed="true" stored="true" required="true"/>
+
+        <!-- Magento Store Id -->
+        <field name="store_id" type="int" indexed="true" stored="true" required="true"/>
+
+        <!-- Magento Product Fulltext -->
+        <field name="text" type="text_general" indexed="true" stored="false"/>
+
+        <field name="_version_" type="long" indexed="true" stored="true"/>
+    </fields>
+
+    <uniqueKey>id</uniqueKey>
+
+    <defaultSearchField>text</defaultSearchField>
+
+    <solrQueryParser defaultOperator="AND"/>
+
+</schema>

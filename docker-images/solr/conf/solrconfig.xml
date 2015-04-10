@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+/**
+ * JeroenVermeulen_Solarium
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this Module to
+ * newer versions in the future.
+ *
+ * @category    JeroenVermeulen
+ * @package     JeroenVermeulen_Solarium
+ * @copyright   Copyright (c) 2014 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<!--suppress XmlUnboundNsPrefix -->
+<config>
+
+    <luceneMatchVersion>LUCENE_CURRENT</luceneMatchVersion>
+
+    <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
+
+    <dataDir>${solr.data.dir:}</dataDir>
+
+    <codecFactory class="solr.SchemaCodecFactory"/>
+
+    <schemaFactory class="ClassicIndexSchemaFactory"/>
+
+    <indexConfig>
+        <lockType>${solr.lock.type:native}</lockType>
+    </indexConfig>
+
+    <updateHandler class="solr.DirectUpdateHandler2">
+        <updateLog>
+            <str name="dir">${solr.ulog.dir:}</str>
+        </updateLog>
+        <autoCommit>
+            <maxTime>15000</maxTime>
+            <openSearcher>false</openSearcher>
+        </autoCommit>
+    </updateHandler>
+
+    <query>
+        <maxBooleanClauses>1024</maxBooleanClauses>
+        <filterCache class="solr.FastLRUCache"
+                     size="512"
+                     initialSize="512"
+                     autowarmCount="0"/>
+        <queryResultCache class="solr.LRUCache"
+                          size="512"
+                          initialSize="512"
+                          autowarmCount="0"/>
+        <documentCache class="solr.LRUCache"
+                       size="512"
+                       initialSize="512"
+                       autowarmCount="0"/>
+        <enableLazyFieldLoading>true</enableLazyFieldLoading>
+        <queryResultWindowSize>20</queryResultWindowSize>
+        <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+        <useColdSearcher>false</useColdSearcher>
+        <maxWarmingSearchers>2</maxWarmingSearchers>
+    </query>
+
+    <requestDispatcher handleSelect="false">
+        <requestParsers enableRemoteStreaming="true"
+                        multipartUploadLimitInKB="2048000"
+                        formdataUploadLimitInKB="2048"/>
+        <httpCaching never304="true"/>
+    </requestDispatcher>
+
+    <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
+        <lst name="defaults">
+            <!-- These defaults are required for Solr < 3.6 -->
+            <str name="field">text</str>
+            <str name="qt">/select</str>
+            <str name="q">solrpingquery</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/select" class="solr.SearchHandler">
+        <arr name="last-components">
+            <str>spellcheck</str>
+        </arr>
+    </requestHandler>
+
+    <requestHandler name="/update" class="solr.XmlUpdateRequestHandler"/>
+    <requestHandler name="/analysis/field" class="solr.FieldAnalysisRequestHandler" startup="lazy"/>
+    <requestHandler name="/analysis/document" class="solr.DocumentAnalysisRequestHandler" startup="lazy"/>
+    <requestHandler name="/admin/" class="solr.admin.AdminHandlers"/>
+
+    <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+        <str name="queryAnalyzerFieldType">text_general</str>
+        <lst name="spellchecker">
+            <str name="field">text</str>
+            <int name="maxEdits">2</int>
+            <int name="minPrefix">0</int>
+            <int name="minQueryLength">3</int>
+            <str name="buildOnOptimize">true</str>
+        </lst>
+    </searchComponent>
+
+    <queryResponseWriter name="json" class="solr.JSONResponseWriter">
+        <str name="content-type">text/plain; charset=UTF-8</str>
+    </queryResponseWriter>
+
+</config>
