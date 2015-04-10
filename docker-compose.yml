@@ -1,7 +1,7 @@
 installer:
   build: docker-images/installer
   environment:
-    DOMAIN: localhost
+    DOMAIN: 127.0.0.1
     MAGENTO_ROOT: /var/www/html/web
     MYSQL_HOST: mysql
     MYSQL_ROOT_PASSWORD: pw
@@ -19,9 +19,9 @@ nginx:
     - "443:443"
   links:
     - "php"
-  domainname: localhost
+  domainname: 127.0.0.1
   environment:
-    DOMAIN: localhost
+    DOMAIN: 127.0.0.1
     MAGENTO_ROOT: /var/www/html/web
     MAGENTO_DEVELOPERMODE: 1
     SSL_CERTIFICATE_PATH: /etc/ssl/certs/ssl-cert-snakeoil.pem
