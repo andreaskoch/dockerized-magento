@@ -54,6 +54,8 @@ mysql:
     - "3306:3306"
   environment:
     MYSQL_ROOT_PASSWORD: pw
+  volumes:
+    - db:/var/lib/mysql
 solr:
   build: docker-images/solr
   volumes:
