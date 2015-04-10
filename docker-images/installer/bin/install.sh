@@ -28,6 +28,20 @@ function printLogonInformation() {
 	echo "Backend: $backendUrl"
 }
 
+#####################################
+# A never-ending while loop (which keeps the installer container alive)
+# Arguments:
+#   None
+# Returns:
+#   None
+#####################################
+function runForever() {
+	while :
+	do
+		sleep 1
+	done
+}
+
 # Check if the MAGENTO_ROOT direcotry has been specified
 if [ -z "$MAGENTO_ROOT" ]
 then
@@ -51,6 +65,7 @@ then
 
 	printLogonInformation
 
+	runForever
 	exit 0
 fi
 
@@ -76,7 +91,5 @@ updateMagento
 echo "Installation fininished"
 printLogonInformation
 
-while :
-do
-	sleep 1
-done
+runForever
+exit 0
