@@ -12,6 +12,22 @@ function updateMagento() {
 	composer update
 }
 
+#####################################
+# Print URLs and Logon Information
+# Arguments:
+#   None
+# Returns:
+#   None
+#####################################
+function printLogonInformation() {
+	baseUrl="http://$DOMAIN"
+	frontendUrl="$baseUrl/"
+	backendUrl="$baseUrl/admin"
+
+	echo "Frontend: $frontendUrl"
+	echo "Backend: $backendUrl"
+}
+
 # Check if the MAGENTO_ROOT direcotry has been specified
 if [ -z "$MAGENTO_ROOT" ]
 then
