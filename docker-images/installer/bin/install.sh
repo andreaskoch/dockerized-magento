@@ -1,5 +1,17 @@
 #!/bin/bash
 
+#####################################
+# Update the Magento Installation
+# Arguments:
+#   None
+# Returns:
+#   None
+#####################################
+function updateMagento() {
+	cd /var/www/html
+	composer update
+}
+
 # Check if the MAGENTO_ROOT direcotry has been specified
 if [ -z "$MAGENTO_ROOT" ]
 then
@@ -18,11 +30,15 @@ fi
 if [ -e "$MAGENTO_ROOT/index.php" ]
 then
 	echo "Magento is already installed."
+	echo "Updating Magento"
+	updateMagento
 	exit 0
 fi
 
-echo "Installing Magento"
+echo "Preparing the Magerun Configuration"
+substitute-env-vars.sh /etc /etc/n98-magerun.yaml.tmpl
 
+echo "Installing Magento"
 magerun install \
  --dbHost=mysql \
  --dbUser="$MYSQL_USER" \
@@ -36,8 +52,7 @@ magerun install \
  --skip-root-check
 
 echo "Install modules"
-cd /var/www/html
-composer update
+updateMagento
 
 echo "Installation fininished"
 

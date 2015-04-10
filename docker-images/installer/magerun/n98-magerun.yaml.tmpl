@@ -9,9 +9,26 @@ commands:
         extra:
           sample-data: sample-data-1.9.1.0-dropbox
 
+
     demo-data-packages:
       - name: sample-data-1.9.1.0-dropbox
         version: 1.9.1.0
         dist:
           url: https://www.dropbox.com/s/zhwht0r4u44q41q/magento-sample-data-1.9.1.0.tar.gz?dl=1
           type: tar
+
+
+    defaults:
+      currency: EUR
+      locale: en_GB
+      timezone: Europe/London
+      use_secure: no
+      use_rewrites: yes
+      session_save: files
+      admin_username: admin
+      admin_firstname: Admin
+      admin_lastname: Inistrator
+      admin_password: password123
+      admin_frontname: admin
+      admin_email: admin@${DOMAIN}
+      encryption_key:

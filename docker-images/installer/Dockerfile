@@ -22,7 +22,15 @@ RUN buildDeps=" \
     zip \
     && apt-get purge -y --auto-remove
 
-COPY php.ini /usr/local/etc/php/php.ini
+COPY php/php.ini /usr/local/etc/php/php.ini
+
+# Add Tools
+COPY bin/substitute-env-vars.sh /bin/substitute-env-vars.sh
+RUN chmod +x /bin/substitute-env-vars.sh
+
+# Add the Installer
+COPY bin/install.sh /bin/install.sh
+RUN chmod +x /bin/install.sh
 
 # Install magerun
 RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
@@ -34,13 +42,9 @@ RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/
     apt-get purge -y --auto-remove
 
 # Add a custom magerun configuration
-COPY n98-magerun.yaml /etc/n98-magerun.yaml
+COPY magerun/n98-magerun.yaml.tmpl /etc/n98-magerun.yaml.tmpl
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=bin
-
-# Add the installer
-COPY install.sh /bin/install.sh
-RUN chmod +x /bin/install.sh
 
 ENTRYPOINT ["/bin/install.sh"]
