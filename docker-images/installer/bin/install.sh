@@ -48,6 +48,9 @@ then
 	echo "Magento is already installed."
 	echo "Updating Magento"
 	updateMagento
+
+	printLogonInformation
+
 	exit 0
 fi
 
@@ -71,6 +74,7 @@ echo "Install modules"
 updateMagento
 
 echo "Installation fininished"
+printLogonInformation
 
 while :
 do
