@@ -4,7 +4,6 @@ installer:
     DOMAIN: 127.0.0.1
     MAGENTO_ROOT: /var/www/html/web
     MYSQL_HOST: mysql
-    MYSQL_ROOT_PASSWORD: pw
     MYSQL_DATABASE: magento
     MYSQL_USER: root
     MYSQL_PASSWORD: pw
@@ -43,6 +42,7 @@ php:
   links:
     - "cache:rediscache"
     - "sessions:redissession"
+    - "fullpagecache:redisfullpagecache"
     - "solr:solr"
     - "mysql:mysql"
   volumes:
@@ -58,6 +58,8 @@ mysql:
 solr:
   build: docker-images/solr
 cache:
+  image: redis:latest
+fullpagecache:
   image: redis:latest
 sessions:
   image: redis:latest

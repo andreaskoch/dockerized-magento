@@ -93,7 +93,7 @@ echo "Installing Magento"
 magerun install \
  --dbHost=mysql \
  --dbUser="$MYSQL_USER" \
- --dbPass="$MYSQL_ROOT_PASSWORD" \
+ --dbPass="$MYSQL_PASSWORD" \
  --dbName="$MYSQL_DATABASE" \
  --dbPort="3306" \
  --magentoVersionByName="magento-ce-1.9.1.0-dropbox" \
@@ -104,6 +104,12 @@ magerun install \
 
 echo "Install modules"
 updateMagento
+
+echo "Preparing the Magento Configuration"
+substitute-env-vars.sh /etc /etc/local.xml.tmpl
+
+echo "Overriding Magento Configuration"
+cp -v /etc/local.xml /var/www/html/web/app/etc/local.xml
 
 echo "Fixing filesystem permissions"
 fixFilesystemPermissions
