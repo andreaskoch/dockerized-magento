@@ -54,8 +54,7 @@ fi
 # Check if the specified MAGENTO_ROOT direcotry exists
 if [ ! -d "$MAGENTO_ROOT" ]
 then
-	echo "The specified Magento root directory '$MAGENTO_ROOT' does not exists. Check your volume configuration."
-	exit 1
+	mkdir -p $MAGENTO_ROOT
 fi
 
 # Check if there is alreay an index.php. If yes, abort the installation process.

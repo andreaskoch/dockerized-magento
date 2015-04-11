@@ -36,7 +36,6 @@ nginx:
   volumes:
     - /etc/ssl/certs/ssl-cert-snakeoil.pem:/etc/ssl/certs/ssl-cert-snakeoil.pem
     - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/private/ssl-cert-snakeoil.key
-    - ./logs/nginx:/var/log/nginx
   volumes_from:
     - php
 php:
@@ -58,8 +57,6 @@ mysql:
     - db:/var/lib/mysql
 solr:
   build: docker-images/solr
-  volumes:
-  - docker-images/solr/config/solr/conf:/usr/local/apache-solr-3.6.2/example/solr/conf
 cache:
   image: redis:latest
 sessions:

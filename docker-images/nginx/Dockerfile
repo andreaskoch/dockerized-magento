@@ -8,7 +8,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /etc/nginx
 
-VOLUME ["/var/log/nginx"]
 EXPOSE 80 443
 
 ENTRYPOINT ["entrypoint.sh"]
