@@ -30,6 +30,18 @@ function printLogonInformation() {
 	echo " - Password: ${ADMIN_PASSWORD}"
 }
 
+
+#####################################
+# Fix the filesystem permissions for the magento root.
+# Arguments:
+#   None
+# Returns:
+#   None
+#####################################
+function fixFilesystemPermissions() {
+	chmod -R go+rw $MAGENTO_ROOT
+}
+
 #####################################
 # A never-ending while loop (which keeps the installer container alive)
 # Arguments:
@@ -64,6 +76,10 @@ then
 	echo "Updating Magento"
 	updateMagento
 
+	echo "Fixing filesystem permissions"
+	fixFilesystemPermissions
+
+	echo "Update fininished"
 	printLogonInformation
 
 	runForever
@@ -88,6 +104,9 @@ magerun install \
 
 echo "Install modules"
 updateMagento
+
+echo "Fixing filesystem permissions"
+fixFilesystemPermissions
 
 echo "Installation fininished"
 printLogonInformation
