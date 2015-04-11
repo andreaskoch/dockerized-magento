@@ -1,0 +1,87 @@
+#!/bin/sh
+
+# The first parameter is the action name
+action=$1
+
+# All other arguments are parameters
+if [ "$#" -gt "1" ]; then
+shift
+parameters=$@
+fi
+
+SCRIPTNAME=`basename $0`
+SCRIPTPATH=$(readlink -f "$0")
+PROJECTPATH=$(dirname "$SCRIPTPATH")
+DOCKERCOMPOSE=`which docker-compose`
+
+executeMagerun() {
+    $DOCKERCOMPOSE run --rm php magerun --skip-root-check --root-dir="/var/www/html/web" $@
+}
+
+start() {
+    $DOCKERCOMPOSE up -d && $DOCKERCOMPOSE logs
+}
+
+stop() {
+    $DOCKERCOMPOSE stop
+}
+
+restart() {
+    $DOCKERCOMPOSE restart
+    executeMagerun cache:clean
+}
+
+status() {
+    $DOCKERCOMPOSE ps
+}
+
+magerun() {
+    executeMagerun $parameters
+}
+
+destroy() {
+    $DOCKERCOMPOSE stop
+    $DOCKERCOMPOSE rm --force
+    rm -rf $PROJECTPATH/web $PROJECTPATH/db $PROJECTPATH/vendor
+}
+
+case "$action" in
+    start)
+    start
+    ;;
+
+    stop)
+    stop
+    ;;
+
+    restart)
+    restart
+    ;;
+
+    status)
+    status
+    ;;
+
+    magerun)
+    magerun
+    ;;
+
+    destroy)
+    destroy
+    ;;
+
+    *)
+    echo "usage : $0 start|stop|restart|status|magerun|destroy
+
+  start      Starts the docker containers (and triggers the
+             installation if magento is not yet installed)
+  stop       Stops all docker containers
+  restart    Restarts all docker containers
+  status     Prints the status of all docker containers
+  magerun    Executes magerun in the php container
+  destroy    Stops all containers and removes all data
+"
+    ;;
+esac
+
+exit 0

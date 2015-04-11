@@ -4,36 +4,22 @@ A dockerized version of "Magento Community Edition 1.9.x"
 
 ## Requirements
 
-- PHP and Composer for the installation of Magento
 - [docker](http://docs.docker.com/compose/install/#install-docker)
-- [docker-compose](http://docs.docker.com/compose/install/#install-compose)
+- [docker-compose (formerly known as fig)](http://docs.docker.com/compose/install/#install-compose)
 
 ## Usage
 
 ```bash
-docker-compose up -d
+./magento <action>
 ```
 
-## Installation (as a service)
+**Actons**
 
-You can start the project using the default fig commands or you can install and init.d script.
+- **start**: Starts the docker containers (and triggers the installation if magento is not yet installed)
+- **stop**: Stops all docker containers
+- **restart**: Restarts all docker containers and flushes the cache
+- **status**: Prints the status of all docker containers
+- **magerun**: Executes magerun in the php container
+- **destroy**: Stops all containers and removes all data
 
-**Create an init.d script**
-
-```bash
-sudo ln -s $(readlink -f ./service.sh) /etc/init.d/magento-ce-1-9
-```
-
-**Enable autostart**
-
-On Debian/Ubuntu:
-
-```bash
-sudo update-rc.d magento-ce-1-9 defaults
-```
-
-On RHEL/CentOS:
-
-```bash
-sudo chkconfig magento-ce-1-9 on
-```
+**Note**: The `magento`-script is just a small wrapper arround `docker-compose`. You can just use [docker-compose](https://docs.docker.com/compose/) directly.
