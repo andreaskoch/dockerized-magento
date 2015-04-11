@@ -26,6 +26,8 @@ function printLogonInformation() {
 
 	echo "Frontend: $frontendUrl"
 	echo "Backend: $backendUrl"
+	echo " - Username: ${ADMIN_USERNAME}"
+	echo " - Password: ${ADMIN_PASSWORD}"
 }
 
 #####################################
