@@ -17,7 +17,11 @@ installer:
   volumes_from:
     - nginx
   links:
-    - "mysql"
+    - "cache:rediscache"
+    - "sessions:redissession"
+    - "fullpagecache:redisfullpagecache"
+    - "solr:solr"
+    - "mysql:mysql"
 nginx:
   build: docker-images/nginx
   ports:

@@ -86,4 +86,29 @@
             </adminhtml>
         </routers>
     </admin>
+    <default>
+        <web>
+            <unsecure>
+                <base_url>http://${DOMAIN}/</base_url>
+                <base_link_url>http://${DOMAIN}/</base_link_url>
+                <base_skin_url>http://${DOMAIN}/skin/</base_skin_url>
+                <base_media_url>http://${DOMAIN}/media/</base_media_url>
+                <base_js_url>http://${DOMAIN}/js/</base_js_url>
+            </unsecure>
+            <secure>
+                <use_in_frontend>0</use_in_frontend>
+                <use_in_adminhtml>1</use_in_adminhtml>
+                <base_url>https://${DOMAIN}/</base_url>
+                <base_link_url>https://${DOMAIN}/</base_link_url>
+                <base_skin_url>https://${DOMAIN}/skin/</base_skin_url>
+                <base_media_url>https://${DOMAIN}/media/</base_media_url>
+                <base_js_url>https://${DOMAIN}/js/</base_js_url>
+            </secure>
+            <cookie>
+                <domain_path>${DOMAIN}</domain_path>
+            </cookie>
+        </web>
+    </default>
+    <stores>
+    </stores>
 </config>

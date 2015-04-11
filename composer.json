@@ -6,8 +6,9 @@
   "require": {
     "aoepeople/aoe_scheduler": "v0.4.3",
     "aschroder/smtp_pro": "v2.0.5",
+    "jeroenvermeulen/solarium": "v1.6.9-beta",
     "magento-hackathon/magento-composer-installer": "v2.1.1",
-    "jeroenvermeulen/solarium": "v1.6.9-beta"
+    "magento/core": "1.9.1.0-patch1"
   },
   "require-dev": {
     "aoepeople/aoe_profiler": "v0.3.0",

@@ -90,19 +90,6 @@ echo "Preparing the Magerun Configuration"
 substitute-env-vars.sh /etc /etc/n98-magerun.yaml.tmpl
 
 echo "Installing Magento"
-magerun install \
- --dbHost=mysql \
- --dbUser="$MYSQL_USER" \
- --dbPass="$MYSQL_PASSWORD" \
- --dbName="$MYSQL_DATABASE" \
- --dbPort="3306" \
- --magentoVersionByName="magento-ce-1.9.1.0-dropbox" \
- --installationFolder="$MAGENTO_ROOT" \
- --installSampleData=yes \
- --baseUrl="http://$DOMAIN/" \
- --skip-root-check
-
-echo "Install modules"
 updateMagento
 
 echo "Preparing the Magento Configuration"
@@ -110,6 +97,21 @@ substitute-env-vars.sh /etc /etc/local.xml.tmpl
 
 echo "Overriding Magento Configuration"
 cp -v /etc/local.xml /var/www/html/web/app/etc/local.xml
+
+echo "Installing Sample Data: Media"
+curl -s -L https://www.dropbox.com/s/zhwht0r4u44q41q/magento-sample-data-1.9.1.0.tar.gz?dl=1 | tar xz -C /tmp
+cp -av /tmp/magento-sample-data-*/* $MAGENTO_ROOT
+rm -rf /tmp/magento-sample-data-*
+
+echo "Installing Sample Data: Database"
+magerun db:create --skip-root-check --root-dir="$MAGENTO_ROOT"
+databaseFilePath="$MAGENTO_ROOT/*.sql"
+magerun db:import --skip-root-check --root-dir="$MAGENTO_ROOT" $databaseFilePath
+rm $databaseFilePath
+
+echo "Installing Sample Data: Reindex"
+magerun cache:clean --skip-root-check --root-dir="$MAGENTO_ROOT"
+magerun index:reindex:all --skip-root-check --root-dir="$MAGENTO_ROOT"
 
 echo "Fixing filesystem permissions"
 fixFilesystemPermissions
