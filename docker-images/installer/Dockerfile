@@ -56,8 +56,9 @@ RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/
 # Add a custom magerun configuration
 COPY magerun/n98-magerun.yaml.tmpl /etc/n98-magerun.yaml.tmpl
 
-# Add a custom local.xml
+# Add custom Magento configuration files
 COPY magento/local.xml.tmpl /etc/local.xml.tmpl
+COPY magento/fpc.xml.tmpl /etc/fpc.xml.tmpl
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=bin

@@ -94,9 +94,11 @@ updateMagento
 
 echo "Preparing the Magento Configuration"
 substitute-env-vars.sh /etc /etc/local.xml.tmpl
+substitute-env-vars.sh /etc /etc/fpc.xml.tmpl
 
 echo "Overriding Magento Configuration"
 cp -v /etc/local.xml /var/www/html/web/app/etc/local.xml
+cp -v /etc/fpc.xml /var/www/html/web/app/etc/fpc.xml
 
 echo "Installing Sample Data: Media"
 curl -s -L https://www.dropbox.com/s/zhwht0r4u44q41q/magento-sample-data-1.9.1.0.tar.gz?dl=1 | tar xz -C /tmp
@@ -122,6 +124,9 @@ magerun --skip-root-check --root-dir="$MAGENTO_ROOT" \
 		"${ADMIN_FIRSTNAME}" \
 		"${ADMIN_LASTNAME}" \
 		"Administrators"
+
+echo "Enable Fullpage Cache"
+magerun --skip-root-check --root-dir="$MAGENTO_ROOT" cache:enable fpc
 
 echo "Fixing filesystem permissions"
 fixFilesystemPermissions
