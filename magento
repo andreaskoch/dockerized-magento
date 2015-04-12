@@ -140,6 +140,17 @@ status() {
     $DOCKERCOMPOSE ps
 }
 
+stats() {
+    # check if sed is available
+    if [ -z "$SED" ];
+    then
+        echo "Stats requires 'sed'. The tool was not found on your system." >&2
+        return 1
+    fi
+
+    $DOCKER ps -q | $XARGS $DOCKER inspect --format '{{.Name}}' | $SED 's:/::' | $XARGS $DOCKER stats
+}
+
 magerun() {
     executeMagerun $parameters
 }
@@ -175,6 +186,10 @@ case "$action" in
     status
     ;;
 
+    stats)
+    stats
+    ;;
+
     magerun)
     magerun
     ;;
@@ -192,13 +207,14 @@ case "$action" in
     ;;
 
     *)
-    echo "usage : $0 start|stop|restart|status|magerun|composer|enter|destroy
+    echo "usage : $0 start|stop|restart|status|stats|magerun|composer|enter|destroy
 
   start      Starts the docker containers (and triggers the
              installation if magento is not yet installed)
   stop       Stops all docker containers
   restart    Restarts all docker containers
   status     Prints the status of all docker containers
+  stats      Displays live resource usage statistics of all containers
   magerun    Executes magerun in the magento root directory
   composer   Executes composer in the magento root directory
   enter      Enters the bash of a given container type (e.g. php, mysql)
