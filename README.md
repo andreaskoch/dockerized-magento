@@ -7,6 +7,10 @@ A dockerized version of "Magento Community Edition 1.9.x"
 - [docker](http://docs.docker.com/compose/install/#install-docker)
 - [docker-compose (formerly known as fig)](http://docs.docker.com/compose/install/#install-compose)
 
+or
+
+you can use [vagrant](https://www.vagrantup.com/) if you like.
+
 ## Usage
 
 ```bash
