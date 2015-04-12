@@ -104,14 +104,24 @@ cp -av /tmp/magento-sample-data-*/* $MAGENTO_ROOT
 rm -rf /tmp/magento-sample-data-*
 
 echo "Installing Sample Data: Database"
-magerun db:create --skip-root-check --root-dir="$MAGENTO_ROOT"
+magerun --skip-root-check --root-dir="$MAGENTO_ROOT" db:create
 databaseFilePath="$MAGENTO_ROOT/*.sql"
-magerun db:import --skip-root-check --root-dir="$MAGENTO_ROOT" $databaseFilePath
+magerun --skip-root-check --root-dir="$MAGENTO_ROOT" db:import $databaseFilePath
 rm $databaseFilePath
 
 echo "Installing Sample Data: Reindex"
-magerun cache:clean --skip-root-check --root-dir="$MAGENTO_ROOT"
-magerun index:reindex:all --skip-root-check --root-dir="$MAGENTO_ROOT"
+magerun --skip-root-check --root-dir="$MAGENTO_ROOT" cache:clean
+magerun --skip-root-check --root-dir="$MAGENTO_ROOT" index:reindex:all
+
+echo "Installing Sample Data: Admin User"
+magerun --skip-root-check --root-dir="$MAGENTO_ROOT" \
+		admin:user:create \
+		"${ADMIN_USERNAME}" \
+		"${ADMIN_EMAIL}" \
+		"${ADMIN_PASSWORD}" \
+		"${ADMIN_FIRSTNAME}" \
+		"${ADMIN_LASTNAME}" \
+		"Administrators"
 
 echo "Fixing filesystem permissions"
 fixFilesystemPermissions

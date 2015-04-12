@@ -108,6 +108,31 @@
                 <domain_path>${DOMAIN}</domain_path>
             </cookie>
         </web>
+        <currency>
+            <options>
+                <default>EUR</default>
+                <allow>EUR</allow>
+            </options>
+        </currency>
+        <jeroenvermeulen_solarium>
+            <general>
+                <enabled>1</enabled>
+            </general>
+            <server>
+                <host>solr</host>
+                <port>8983</port>
+                <path>/solr</path>
+                <core>collection1</core>
+            </server>
+        </jeroenvermeulen_solarium>
+        <dev>
+            <template>
+                <allow_symlink>1</allow_symlink>
+            </template>
+            <log>
+                <active>1</active>
+            </log>
+        </dev>
     </default>
     <stores>
     </stores>
