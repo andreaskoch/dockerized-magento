@@ -1,4 +1,6 @@
 #!/bin/sh
+#
+# A control-script for managing the docker-infrastructure components for Magento
 
 # The first parameter is the action name
 action=$1
@@ -9,13 +11,116 @@ shift
 parameters=$@
 fi
 
+# Paths
 SCRIPTNAME=`basename $0`
 SCRIPTPATH=$(readlink -f "$0")
 PROJECTPATH=$(dirname "$SCRIPTPATH")
+
+# Mandatory Tools
+DOCKER=`which docker`
+if [ -z "$DOCKER" ];
+then
+    echo "'docker' was not found on your system." >&2
+    exit 1
+fi
+
 DOCKERCOMPOSE=`which docker-compose`
+if [ -z "$DOCKERCOMPOSE" ];
+then
+    echo "'docker-compose' was not found on your system." >&2
+    exit 1
+fi
+
+# Utils
+XARGS=`which xargs`
+GREP=`which grep`
+SED=`which sed`
+
+#########################################################################
+# Get the full container name for the given container type (e.g. "php")
+# Arguments:
+#  CONTAINER_TYPE
+# Returns:
+#  The full name of the (first) container with the given type
+#########################################################################
+getContainerNameByType() {
+    # abort if no type is specified
+    local CONTAINER_TYPE="$1"
+    if [ -z "$CONTAINER_TYPE" ];
+    then
+        echo "No container type specified. Please specifiy a container type (e.g. php, installer, mysql, nginx, ...)."  >&2
+        return 1
+    fi
+
+    # check if xargs is available
+    if [ -z "$XARGS" ];
+    then
+        echo "The tool 'xargs' was not found on your system." >&2
+        return 1
+    fi
+
+    # check if grep is available
+    if [ -z "$GREP" ];
+    then
+        echo "The tool 'grep' was not found on your system." >&2
+        return 1
+    fi
+
+    # check if sed is available
+    if [ -z "$SED" ];
+    then
+        echo "The tool 'sed' was not found on your system." >&2
+        return 1
+    fi
+
+    local containerName=$($DOCKER ps -q | $XARGS $DOCKER inspect --format '{{.Name}}' | $GREP "$containerNameFragment" | $SED 's:/::' | $GREP "$CONTAINER_TYPE_1")
+    echo $containerName
+    return 0
+}
 
 executeMagerun() {
-    $DOCKERCOMPOSE run --rm php magerun --skip-root-check --root-dir="/var/www/html/web" $@
+    local containerType="installer"
+    local containerName=$(getContainerNameByType "$containerType")
+    if [ -z "$containerName" ];
+    then
+        echo "Cannot determine the name of the container." >&2
+        return 1
+    fi
+
+    $DOCKER exec -ti $containerName magerun --skip-root-check --root-dir="/var/www/html/web" $@
+    return 0
+}
+
+executeComposer() {
+    local containerType="installer"
+    local containerName=$(getContainerNameByType $containerType)
+    if [ -z "$containerName" ];
+    then
+        echo "Cannot determine the name of the container." >&2
+        return 1
+    fi
+
+    $DOCKER exec $containerName composer --working-dir="/var/www/html/web" $@
+    return 0
+}
+
+enterContainer() {
+    local containerType="$1"
+    if [ -z "$containerType" ];
+    then
+        echo "No container type specified. Please specifiy a container type (e.g. php, installer, mysql, nginx, ...)."  >&2
+        return 1
+    fi
+
+    local containerName=$(getContainerNameByType $containerType)
+    if [ -z "$containerName" ];
+    then
+        echo "Cannot determine the name of the container." >&2
+        return 1
+    fi
+
+    $DOCKER exec -ti $containerName bash
+    return 0
 }
 
 start() {
@@ -37,6 +142,14 @@ status() {
 
 magerun() {
     executeMagerun $parameters
+}
+
+composer() {
+    executeComposer $parameters
+}
+
+enter() {
+    enterContainer $parameters
 }
 
 destroy() {
@@ -66,19 +179,29 @@ case "$action" in
     magerun
     ;;
 
+    composer)
+    composer
+    ;;
+
+    enter)
+    enter
+    ;;
+
     destroy)
     destroy
     ;;
 
     *)
-    echo "usage : $0 start|stop|restart|status|magerun|destroy
+    echo "usage : $0 start|stop|restart|status|magerun|composer|enter|destroy
 
   start      Starts the docker containers (and triggers the
              installation if magento is not yet installed)
   stop       Stops all docker containers
   restart    Restarts all docker containers
   status     Prints the status of all docker containers
-  magerun    Executes magerun in the php container
+  magerun    Executes magerun in the magento root directory
+  composer   Executes composer in the magento root directory
+  enter      Enters the bash of a given container type (e.g. php, mysql)
   destroy    Stops all containers and removes all data
 "
     ;;
