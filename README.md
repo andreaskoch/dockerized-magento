@@ -37,7 +37,7 @@ you can use [vagrant](https://www.vagrantup.com/) if you like.
 The dockerized Magento project consists of the following components:
 
 - **docker images**
-  1. a [php 5.5](docker-images/php/Dockerfile) image
+  1. a [php 5.5](docker-images/php/5.5/Dockerfile) image
   2. a [nginx](docker-images/nginx/Dockerfile) web server image
   3. a [solr](docker-images/solr/Dockerfile) search server
   4. a standard [mysql](https://registry.hub.docker.com/_/mysql/) database server image
