@@ -49,6 +49,6 @@ The dockerized Magento project consists of the following components:
 
 The component-diagram should give you a general idea* how all components of the "dockerized Magento" project are connected:
 
-[![Dockerized Magento: Component Diagram](documentation/dockerized-magento-component-diagram.svg)](documentation/dockerized-magento-component-diagram.svg)
+[![Dockerized Magento: Component Diagram](documentation/dockerized-magento-component-diagram.png)](documentation/dockerized-magento-component-diagram.svg)
 
 `*` The diagram is just an attempt to visualize the dependencies between the different components. You can get the complete picture by studying the docker-compose file: [docker-compose.yml](docker-compose.yml)
