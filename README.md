@@ -36,14 +36,14 @@ you can use [vagrant](https://www.vagrantup.com/) if you like.
 
 The dockerized Magento project consists of the following components:
 
-- **docker images**
+- **[docker images](docker-images)**
   1. a [php 5.5](docker-images/php/5.5/Dockerfile) image
   2. a [nginx](docker-images/nginx/Dockerfile) web server image
   3. a [solr](docker-images/solr/Dockerfile) search server
   4. a standard [mysql](https://registry.hub.docker.com/_/mysql/) database server image
   5. multiple instances of the standard [redis](https://registry.hub.docker.com/_/redis/) docker image
   6. and an [installer](docker-images/installer/Dockerfile) image which contains all tools for installing the project from scratch using an [install script](docker-images/installer/bin/install.sh)
-- a **shell script** for controlling the project: [`./magento <action>`](magento)
+- a **[shell script](magento)** for controlling the project: [`./magento <action>`](magento)
 - a [composer-file](composer.json) for managing the **Magento modules**
 - and the [docker-compose.yml](docker-compose.yml)-file which connects all components
 
@@ -51,4 +51,6 @@ The component-diagram should give you a general idea* how all components of the 
 
 [![Dockerized Magento: Component Diagram](documentation/dockerized-magento-component-diagram.png)](documentation/dockerized-magento-component-diagram.svg)
 
-`*` The diagram is just an attempt to visualize the dependencies between the different components. You can get the complete picture by studying the docker-compose file: [docker-compose.yml](docker-compose.yml)
+`*` The diagram is just an attempt to visualize the dependencies between the different components. You can get the complete picture by studying the docker-compose file:  [docker-compose.yml](docker-compose.yml)
+
+Even though the setup might seem complex, the usage is thanks to docker really easy.
