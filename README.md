@@ -4,20 +4,60 @@ A dockerized version of "Magento Community Edition 1.9.x"
 
 ## Requirements
 
-- [docker](http://docs.docker.com/compose/install/#install-docker)
+Before you start you should install
+
+- [docker](http://docs.docker.com/compose/install/#install-docker) and
 - [docker-compose (formerly known as fig)](http://docs.docker.com/compose/install/#install-compose)
 
 or
 
-you can use [vagrant](https://www.vagrantup.com/) if you like.
+You can use [vagrant](Vagrantfile) if you are on Windows or a Mac
+
+## Installation
+
+1. Make sure you have docker and docker
+2. Clone the repository
+3. Start the projects using `./magento start` or `docker-compose up`
+
+```bash
+git clone https://github.com/andreaskoch/dockerized-magento.git && cd dockerized-magento
+./magento start
+```
+
+During the first start of the project **docker-compose** will
+
+1. first **build** all docker-images referenced in the [docker-compose.yml](docker-compose.yml)
+2. then **start** the containers
+3. and **trigger the installer** which will
+	- [install magento](docker-images/installer/bin/install.sh) and all modules that are referenced in the [composer.json](composer.json) using `composer` into the web folder
+	- download the [Magento Demo Store Sample Data](http://www.magentocommerce.com/knowledge-base/entry/installing-the-sample-data-for-magento)
+	- copy the files to the magento-root
+	- import the sample database
+	- and finally reindex all indices
+
+Once the installation is fininished the installer will print the URL and the credentials for the backend to the installer log:
+
+```
+...
+installer_1     | Frontend: http://127.0.0.1/
+installer_1     | Backend: http://127.0.0.1/admin
+installer_1     |  - Username: admin
+installer_1     |  - Password: password123
+```
+
+[![Animation: Installation and first projec start](documentation/installation-and-first-start-animation.gif)](https://s3.amazonaws.com/andreaskoch/dockerized-magento/installation/Dockerized-Magento-Installation-Linux-no-sound.mp4)
+
+**Note**: The build process and the installation process will take a while if you start the project for the first time. After thats finished starting and stoping the project will be a matter of seconds.
 
 ## Usage
+
+You can control the project using the built-in `magento`-script which is basically just a **wrapper for docker and docker-compose** that offers some **convenience features**:
 
 ```bash
 ./magento <action>
 ```
 
-**Actons**
+**Available Actons**
 
 - **start**: Starts the docker containers (and triggers the installation if magento is not yet installed)
 - **stop**: Stops all docker containers
