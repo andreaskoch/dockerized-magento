@@ -94,3 +94,5 @@ The component-diagram should give you a general idea* how all components of the 
 `*` The diagram is just an attempt to visualize the dependencies between the different components. You can get the complete picture by studying the docker-compose file:  [docker-compose.yml](docker-compose.yml)
 
 Even though the setup might seem complex, the usage is thanks to docker really easy.
+
+If you are interested in a **guide on how to dockerize a Magento** shop yourself you can have a look at a blog-post of mine: [Dockerizing  Magento](https://andykdocs.de/development/Docker/Dockerize-Magento) on [AndyK Docs](https://andykdocs.de)
