@@ -96,3 +96,83 @@ The component-diagram should give you a general idea* how all components of the 
 Even though the setup might seem complex, the usage is thanks to docker really easy.
 
 If you are interested in a **guide on how to dockerize a Magento** shop yourself you can have a look at a blog-post of mine: [Dockerizing  Magento](https://andykdocs.de/development/Docker/Dockerize-Magento) on [AndyK Docs](https://andykdocs.de)
+
+## Custom Configuration
+
+All parameters of the Magento installation are defined via environment variables that are set in the [docker-compose.yml](docker-compose.yml) file - if you want to tailor the Magento Shop installation to your needs you can do so **by modifying the environment variables** before you start the project.
+
+If you have started the shop before you must **repeat the installation process** in order to apply changes:
+
+1. Modify the parameters in the `docker-compose.yml`
+2. Shutdown the containers and remove all data (`./magento destroy`)
+3. Start the containers again (`./magento start`)
+
+### Changing the domain name
+
+I set the default domain name to `127.0.0.1` so you can access the shop without modifying your hosts-file. But you can simply change that by replacing `127.0.0.1` with `your-domain.tld`.
+
+The domain name used as the **base url** for the Magento installation is referenced three times in the docker-compose.yml:
+
+```yaml
+installer:
+  environment:
+    DOMAIN: 127.0.0.1
+nginx:
+  domainname: 127.0.0.1
+  environment:
+    DOMAIN: 127.0.0.1
+```
+
+1. In the `DOMAIN` environment variable for the **installer**
+2. In `domainname` attribute of the **nginx** container
+3. In the `DOMAIN` environment variable for the **nginx** container
+
+### Using a different SSL certiticate
+
+By default I chose the snakeoil dummy certificate that is installed on Ubuntu systems. If you are on a different system or want to use a real SSL certificate for your shop you can change the environment variables of the **nginx** container:
+
+- `SSL_CERTIFICATE_PATH` for the path to *.pem or *.crt file
+- `SSL_CERTIFICATE_KEY_PATH` for the path to the *.key file
+
+```yaml
+nginx:
+  environment:
+    SSL_CERTIFICATE_PATH: <path-to-your-certificate>
+    SSL_CERTIFICATE_KEY_PATH: <path-to-your-certificates-private-key>
+```
+
+### Adapt Magento Installation Parameters
+
+If you want to install Magento using your own admin-user or change the password, email-adreess or name you can change the environment variable of the **installer** that begin with `ADMIN_`:
+
+- `ADMIN_USERNAME`: The username of the admin user
+- `ADMIN_FIRSTNAME`: The first name of the admin user
+- `ADMIN_LASTNAME`: The last name of the admin user
+- `ADMIN_PASSWORD`: The password for the admin user
+- `ADMIN_EMAIL`: The email address of the admin user (**Note**: Make sure it has a valid syntax. Otherwise Magento will not install.)
+- `ADMIN_FRONTNAME`: The name of the backend route (e.g. `http://127.0.0.1/admin`)
+
+```yaml
+installer:
+  build: docker-images/installer
+  environment:
+		ADMIN_USERNAME: admin
+		ADMIN_FIRSTNAME: Admin
+		ADMIN_LASTNAME: Inistrator
+		ADMIN_PASSWORD: password123
+		ADMIN_FRONTNAME: admin
+		ADMIN_EMAIL: admin@example.com
+```
+
+### Change the MySQL Root User Password
+
+I chose a very weak passwords for the MySQL root-user. You can change it by modifiying the respective environment variables for the **mysql-container** ... and **installer** because otherwise the installation will fail:
+
+```yaml
+installer:
+  environment:
+    MYSQL_PASSWORD: <your-mysql-root-user-password>
+mysql:
+  environment:
+    MYSQL_ROOT_PASSWORD: <your-mysql-root-user-password>
+```
