@@ -15,7 +15,7 @@ You can use [vagrant](Vagrantfile) if you are on Windows or a Mac
 
 ## Installation
 
-1. Make sure you have docker and docker
+1. Make sure you have docker and docker-compose on your system
 2. Clone the repository
 3. Start the projects using `./magento start` or `docker-compose up`
 
