@@ -13,7 +13,7 @@ fi
 
 # Paths
 SCRIPTNAME=`basename $0`
-SCRIPTPATH=$(stat -f "$0")
+SCRIPTPATH=$(readlink -f "$0")
 PROJECTPATH=$(dirname "$SCRIPTPATH")
 
 # Switch into the project directory
