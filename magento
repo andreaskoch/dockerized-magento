@@ -13,7 +13,14 @@ fi
 
 # Paths
 SCRIPTNAME=`basename $0`
-SCRIPTPATH=$(readlink -f "$0")
+SCRIPTPATH=$(readlink -f "$0" 2>/dev/null)
+if [ "$?" != 0 ]; then
+    if [ ! -f "docker-compose.yml" ]; then
+	>&2 echo " The $SCRIPTNAME-script will only work (on Mac OS) if you execute it from the project directory itself."
+	exit 1
+    fi
+    SCRIPTPATH="$(pwd -P)/$SCRIPTNAME"
+fi
 PROJECTPATH=$(dirname "$SCRIPTPATH")
 
 # Switch into the project directory
