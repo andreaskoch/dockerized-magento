@@ -83,7 +83,7 @@ getContainerNameByType() {
         return 1
     fi
 
-    local containerName=$($DOCKER ps -q | $XARGS $DOCKER inspect --format '{{.Name}}' | $GREP "$containerNameFragment" | $SED 's:/::' | $GREP "$CONTAINER_TYPE_1")
+    local containerName=$($DOCKER ps -q | $XARGS $DOCKER inspect --format '{{.Name}}' | $GREP "$CONTAINER_TYPE" | $SED 's:/::' | $GREP "$CONTAINER_TYPE_1")
     echo $containerName
     return 0
 }
