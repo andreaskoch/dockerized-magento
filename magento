@@ -110,7 +110,7 @@ executeComposer() {
         return 1
     fi
 
-    $DOCKER exec $containerName composer --working-dir="/var/www/html/web" $@
+    $DOCKER exec $containerName composer --working-dir="/var/www/html" $@
     return 0
 }
 
