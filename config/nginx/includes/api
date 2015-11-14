@@ -1,0 +1,10 @@
+# Disable Basic Auth for the API
+location ~ ^/index\.php/api/ {
+    rewrite .* /index.php break;
+
+    auth_basic                      off;
+    expires                         off;
+
+    include                         /etc/nginx/includes/magento-fastcgi;
+    include                         /etc/nginx/custom-includes/*-fastcgi;
+}

@@ -4,14 +4,59 @@ A dockerized version of "Magento Community Edition 1.9.x"
 
 ## Requirements
 
-Before you start you should install
+If you are on Linux you should install
 
 - [docker](http://docs.docker.com/compose/install/#install-docker) and
 - [docker-compose (formerly known as fig)](http://docs.docker.com/compose/install/#install-compose)
 
-or
+If you are running on [Mac OS](https://docs.docker.com/engine/installation/mac/) or [Windows](https://docs.docker.com/engine/installation/windows/) you can install the [Docker Toolbox](https://docs.docker.com/engine/installation/mac/) which contains docker, docker-compose and docker-machine.
 
-You can use [vagrant](Vagrantfile) if you are on Windows or a Mac
+## Preparations
+
+The web-server will be bound to your local ports 80 and 443. In order to access the shop you must add a hosts file entry for `dockerized-magento.local`.
+
+### For Linux Users
+
+In order to access the shop you must add the domain name "dockerized-magento.local" to your hosts file (`/etc/hosts`).
+If you are using docker **natively** you can use this command:
+
+```bash
+sudo su
+echo "127.0.0.1    dockerized-magento.local" >> /etc/hosts
+```
+
+### For Mac Users
+
+If you are using [docker-machine](https://github.com/docker/machine) you need to use the IP address of your virtual machine running docker:
+
+```bash
+docker-machine ls
+docker-machine ip <name-of-your-docker-machine>
+```
+
+```bash
+echo "192.168.99.100    dockerized-magento.local" >> /etc/hosts
+```
+
+**docker-machine performance**
+
+For faster sync between your host system and the docker machine image I recommend that you activate NFS support for virtualbox: [github.com/adlogix/docker-machine-nfs](https://github.com/adlogix/docker-machine-nfs)
+
+```bash
+docker-machine create --driver virtualbox nfsbox
+docker-machine-nfs nfsbox
+```
+
+And to fix issues with filesystem permissions you can modify your NFS exports configuration:
+
+1. open `/etc/exports` and replace `-mapall=$uid:$gid` with `-maproot=0`
+2. `sudo nfsd restart`
+
+Thanks to [René Penner](https://github.com/renepenner/magento-docker-boilerplate) for figuring that out.
+
+### For Windows Users
+
+I suppose it will work on Windows, but I have not tested it. And I suspect that the performance will not be great due to the slow file-sharing protocol between the Windows hosts and the VirtualBox VM.
 
 ## Installation
 
@@ -20,7 +65,7 @@ You can use [vagrant](Vagrantfile) if you are on Windows or a Mac
 3. Start the projects using `./magento start` or `docker-compose up`
 
 ```bash
-git clone https://github.com/andreaskoch/dockerized-magento.git && cd dockerized-magento
+git clone https://github.com/andreaskoch/dockerized-magento.local.git && cd dockerized-magento.local
 ./magento start
 ```
 
@@ -35,19 +80,19 @@ During the first start of the project **docker-compose** will
 	- import the sample database
 	- and finally reindex all indices
 
-Once the installation is fininished the installer will print the URL and the credentials for the backend to the installer log:
+Once the installation is finished the installer will print the URL and the credentials for the backend to the installer log:
 
 ```
 ...
-installer_1     | Frontend: http://127.0.0.1/
-installer_1     | Backend: http://127.0.0.1/admin
+installer_1     | Frontend: http://dockerized-magento.local/
+installer_1     | Backend: http://dockerized-magento.local/admin
 installer_1     |  - Username: admin
 installer_1     |  - Password: password123
 ```
 
-[![Animation: Installation and first projec start](documentation/installation-and-first-start-animation.gif)](https://s3.amazonaws.com/andreaskoch/dockerized-magento/installation/Dockerized-Magento-Installation-Linux-no-sound.mp4)
+[![Animation: Installation and first project start](documentation/installation-and-first-start-animation.gif)](https://s3.amazonaws.com/andreaskoch/dockerized-magento.local/installation/Dockerized-Magento-Installation-Linux-no-sound.mp4)
 
-**Note**: The build process and the installation process will take a while if you start the project for the first time. After thats finished starting and stoping the project will be a matter of seconds.
+**Note**: The build process and the installation process will take a while if you start the project for the first time. After that, starting and stoping the project will be a matter of seconds.
 
 ## Usage
 
@@ -63,12 +108,13 @@ You can control the project using the built-in `magento`-script which is basical
 - **stop**: Stops all docker containers
 - **restart**: Restarts all docker containers and flushes the cache
 - **status**: Prints the status of all docker containers
+- **stats**: Displays live resource usage statistics of all containers
 - **magerun**: Executes magerun in the magento root directory
 - **composer**: Executes composer in the magento root directory
 - **enter**: Enters the bash of a given container type (e.g. php, mysql, ...)
 - **destroy**: Stops all containers and removes all data
 
-**Note**: The `magento`-script is just a small wrapper arround `docker-compose`. You can just use [docker-compose](https://docs.docker.com/compose/) directly.
+**Note**: The `magento`-script is just a small wrapper around `docker-compose`. You can just use [docker-compose](https://docs.docker.com/compose/) directly.
 
 ## Components
 
@@ -89,7 +135,7 @@ The dockerized Magento project consists of the following components:
 
 The component-diagram should give you a general idea* how all components of the "dockerized Magento" project are connected:
 
-[![Dockerized Magento: Component Diagram](documentation/dockerized-magento-component-diagram.png)](documentation/dockerized-magento-component-diagram.svg)
+[![Dockerized Magento: Component Diagram](documentation/dockerized-magento.local-component-diagram.png)](documentation/dockerized-magento.local-component-diagram.svg)
 
 `*` The diagram is just an attempt to visualize the dependencies between the different components. You can get the complete picture by studying the docker-compose file:  [docker-compose.yml](docker-compose.yml)
 
@@ -109,37 +155,18 @@ If you have started the shop before you must **repeat the installation process**
 
 ### Changing the domain name
 
-I set the default domain name to `127.0.0.1` so you can access the shop without modifying your hosts-file. But you can simply change that by replacing `127.0.0.1` with `your-domain.tld`.
-
-The domain name used as the **base url** for the Magento installation is referenced three times in the docker-compose.yml:
+I set the default domain name to `dockerized-magento.local`. To change the domain name replace `dockerized-magento.local` with `your-domain.tld` in the `docker-compose.yml` file:
 
 ```yaml
 installer:
   environment:
-    DOMAIN: 127.0.0.1
-nginx:
-  domainname: 127.0.0.1
-  environment:
-    DOMAIN: 127.0.0.1
+    DOMAIN: dockerized-magento.local
 ```
 
-1. In the `DOMAIN` environment variable for the **installer**
-2. In `domainname` attribute of the **nginx** container
-3. In the `DOMAIN` environment variable for the **nginx** container
+### Using a different SSL certificate
 
-### Using a different SSL certiticate
-
-By default I chose the snakeoil dummy certificate that is installed on Ubuntu systems. If you are on a different system or want to use a real SSL certificate for your shop you can change the environment variables of the **nginx** container:
-
-- `SSL_CERTIFICATE_PATH` for the path to *.pem or *.crt file
-- `SSL_CERTIFICATE_KEY_PATH` for the path to the *.key file
-
-```yaml
-nginx:
-  environment:
-    SSL_CERTIFICATE_PATH: <path-to-your-certificate>
-    SSL_CERTIFICATE_KEY_PATH: <path-to-your-certificates-private-key>
-```
+By default I chose a dummy certificate ([config/ssl/cert.pem](config/ssl/cert.pem)).
+If you want to use a different certificate you can just override the key and cert with your own certificates.
 
 ### Adapt Magento Installation Parameters
 
@@ -150,7 +177,7 @@ If you want to install Magento using your own admin-user or change the password,
 - `ADMIN_LASTNAME`: The last name of the admin user
 - `ADMIN_PASSWORD`: The password for the admin user
 - `ADMIN_EMAIL`: The email address of the admin user (**Note**: Make sure it has a valid syntax. Otherwise Magento will not install.)
-- `ADMIN_FRONTNAME`: The name of the backend route (e.g. `http://127.0.0.1/admin`)
+- `ADMIN_FRONTNAME`: The name of the backend route (e.g. `http://dockerized-magento.local/admin`)
 
 ```yaml
 installer:
@@ -166,7 +193,7 @@ installer:
 
 ### Change the MySQL Root User Password
 
-I chose a very weak passwords for the MySQL root-user. You can change it by modifiying the respective environment variables for the **mysql-container** ... and **installer** because otherwise the installation will fail:
+I chose a very weak passwords for the MySQL root-user. You can change it by modifying the respective environment variables for the **mysql-container** ... and **installer** because otherwise the installation will fail:
 
 ```yaml
 installer:

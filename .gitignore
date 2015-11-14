@@ -4,3 +4,4 @@ composer.phar
 vendor
 db
 .vagrant
+.DS_Store

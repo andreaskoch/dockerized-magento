@@ -1,0 +1,9 @@
+    gzip                on;
+    gzip_min_length     1000;
+    gzip_proxied        any;
+    gzip_types          text/plain
+                        application/xml
+                        text/css
+                        text/js
+                        application/javascript
+                        application/x-javascript;

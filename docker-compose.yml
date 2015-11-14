@@ -1,7 +1,7 @@
 installer:
   build: docker-images/installer
   environment:
-    DOMAIN: 127.0.0.1
+    DOMAIN: dockerized-magento.local
     MAGENTO_ROOT: /var/www/html/web
     MYSQL_HOST: mysql
     MYSQL_DATABASE: magento
@@ -23,26 +23,24 @@ installer:
     - "solr:solr"
     - "mysql:mysql"
 nginx:
-  build: docker-images/nginx
+  image: nginx:latest
   ports:
     - "80:80"
     - "443:443"
   links:
     - "php"
-  domainname: 127.0.0.1
-  environment:
-    DOMAIN: 127.0.0.1
-    MAGENTO_ROOT: /var/www/html/web
-    MAGENTO_DEVELOPERMODE: 1
-    SSL_CERTIFICATE_PATH: /etc/ssl/certs/ssl-cert-snakeoil.pem
-    SSL_CERTIFICATE_KEY_PATH: /etc/ssl/private/ssl-cert-snakeoil.key
   volumes:
-    - /etc/ssl/certs/ssl-cert-snakeoil.pem:/etc/ssl/certs/ssl-cert-snakeoil.pem
-    - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/private/ssl-cert-snakeoil.key
+    - ./logs/nginx:/var/log/nginx
+    - ./config/ssl/cert.pem:/etc/nginx/ssl/cert.pem
+    - ./config/ssl/cert.key:/etc/nginx/ssl/cert.key
+    - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+    - ./config/nginx/sites-enabled/default.conf:/etc/nginx/conf.d/default.conf
+    - ./config/nginx/includes:/etc/nginx/includes
+    - ./config/nginx/custom-locations:/etc/nginx/custom-locations
   volumes_from:
     - php
 php:
-  build: docker-images/php/5.5-dev
+  build: docker-images/php
   links:
     - "cache:rediscache"
     - "sessions:redissession"
@@ -52,13 +50,13 @@ php:
   volumes:
     - .:/var/www/html
 mysql:
-  image: mysql
+  image: mysql:5.5
   ports:
     - "3306:3306"
   environment:
     MYSQL_ROOT_PASSWORD: pw
   volumes:
-    - db:/var/lib/mysql
+    - ./data/mysql:/var/lib/mysql
 solr:
   build: docker-images/solr
 cache:
