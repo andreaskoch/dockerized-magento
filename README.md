@@ -65,7 +65,7 @@ I suppose it will work on Windows, but I have not tested it. And I suspect that 
 3. Start the projects using `./magento start` or `docker-compose up`
 
 ```bash
-git clone https://github.com/andreaskoch/dockerized-magento.local.git && cd dockerized-magento.local
+git clone https://github.com/andreaskoch/dockerized-magento.git && cd dockerized-magento
 ./magento start
 ```
 
@@ -90,7 +90,7 @@ installer_1     |  - Username: admin
 installer_1     |  - Password: password123
 ```
 
-[![Animation: Installation and first project start](documentation/installation-and-first-start-animation.gif)](https://s3.amazonaws.com/andreaskoch/dockerized-magento.local/installation/Dockerized-Magento-Installation-Linux-no-sound.mp4)
+[![Animation: Installation and first project start](documentation/installation-and-first-start-animation.gif)](https://s3.amazonaws.com/andreaskoch/dockerized-magento/installation/Dockerized-Magento-Installation-Linux-no-sound.mp4)
 
 **Note**: The build process and the installation process will take a while if you start the project for the first time. After that, starting and stoping the project will be a matter of seconds.
 
@@ -135,7 +135,7 @@ The dockerized Magento project consists of the following components:
 
 The component-diagram should give you a general idea* how all components of the "dockerized Magento" project are connected:
 
-[![Dockerized Magento: Component Diagram](documentation/dockerized-magento.local-component-diagram.png)](documentation/dockerized-magento.local-component-diagram.svg)
+[![Dockerized Magento: Component Diagram](documentation/dockerized-magento-component-diagram.png)](documentation/dockerized-magento-component-diagram.svg)
 
 `*` The diagram is just an attempt to visualize the dependencies between the different components. You can get the complete picture by studying the docker-compose file:  [docker-compose.yml](docker-compose.yml)
 
