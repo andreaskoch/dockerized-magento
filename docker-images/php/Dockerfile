@@ -26,6 +26,7 @@ RUN buildDeps=" \
     && cd xdebug && phpize && ./configure --enable-xdebug && make \
     && mkdir /usr/lib/php5/ && cp modules/xdebug.so /usr/lib/php5/xdebug.so \
     && touch /usr/local/etc/php/ext-xdebug.ini \
+    && pecl install oauth-1.2.3 \
     && rm -r /tmp/xdebug && apt-get purge -y git-core \
     && apt-get purge -y --auto-remove
 
