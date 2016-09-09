@@ -1,67 +1,69 @@
-installer:
-  build: docker-images/installer
-  environment:
-    DOMAIN: dockerized-magento.local
-    MAGENTO_ROOT: /var/www/html/web
-    MYSQL_HOST: mysql
-    MYSQL_DATABASE: magento
-    MYSQL_USER: root
-    MYSQL_PASSWORD: pw
-    ADMIN_USERNAME: admin
-    ADMIN_FIRSTNAME: Admin
-    ADMIN_LASTNAME: Inistrator
-    ADMIN_PASSWORD: password123
-    ADMIN_FRONTNAME: admin
-    ADMIN_EMAIL: admin@example.com
-    ENCRYPTIONKEY: 731aea833710535779fe8c7c49bc6c4d
-  volumes_from:
-    - nginx
-  links:
-    - "cache:rediscache"
-    - "sessions:redissession"
-    - "fullpagecache:redisfullpagecache"
-    - "solr:solr"
-    - "mysql:mysql"
-nginx:
-  image: nginx:latest
-  ports:
-    - "80:80"
-    - "443:443"
-  links:
-    - "php"
-  volumes:
-    - ./logs/nginx:/var/log/nginx
-    - ./config/ssl/cert.pem:/etc/nginx/ssl/cert.pem
-    - ./config/ssl/cert.key:/etc/nginx/ssl/cert.key
-    - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
-    - ./config/nginx/sites-enabled/default.conf:/etc/nginx/conf.d/default.conf
-    - ./config/nginx/includes:/etc/nginx/includes
-    - ./config/nginx/custom-locations:/etc/nginx/custom-locations
-  volumes_from:
-    - php
-php:
-  build: docker-images/php
-  links:
-    - "cache:rediscache"
-    - "sessions:redissession"
-    - "fullpagecache:redisfullpagecache"
-    - "solr:solr"
-    - "mysql:mysql"
-  volumes:
-    - .:/var/www/html
-mysql:
-  image: mysql:5.5
-  ports:
-    - "3306:3306"
-  environment:
-    MYSQL_ROOT_PASSWORD: pw
-  volumes:
-    - ./data/mysql:/var/lib/mysql
-solr:
-  build: docker-images/solr
-cache:
-  image: redis:latest
-fullpagecache:
-  image: redis:latest
-sessions:
-  image: redis:latest
+version: '2'
+services:
+  installer:
+    build: docker-images/installer
+    environment:
+      DOMAIN: mage1924.local
+      MAGENTO_ROOT: /var/www/html/web
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: magento
+      MYSQL_USER: root
+      MYSQL_PASSWORD: pw
+      ADMIN_USERNAME: admin
+      ADMIN_FIRSTNAME: Adminis
+      ADMIN_LASTNAME: Trator
+      ADMIN_PASSWORD: password123
+      ADMIN_FRONTNAME: admin
+      ADMIN_EMAIL: admin@example.com
+      ENCRYPTIONKEY: 731aea833710535779fe8c7c49bc6c4d
+    volumes_from:
+      - nginx
+    links:
+      - "cache:rediscache"
+      - "sessions:redissession"
+      - "fullpagecache:redisfullpagecache"
+      - "solr:solr"
+      - "mysql:mysql"
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - "php"
+    volumes:
+      - ./logs/nginx:/var/log/nginx
+      - ./config/ssl/cert.pem:/etc/nginx/ssl/cert.pem
+      - ./config/ssl/cert.key:/etc/nginx/ssl/cert.key
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/nginx/sites-enabled/default.conf:/etc/nginx/conf.d/default.conf
+      - ./config/nginx/includes:/etc/nginx/includes
+      - ./config/nginx/custom-locations:/etc/nginx/custom-locations
+    volumes_from:
+      - php
+  php:
+    build: docker-images/php
+    links:
+      - "cache:rediscache"
+      - "sessions:redissession"
+      - "fullpagecache:redisfullpagecache"
+      - "solr:solr"
+      - "mysql:mysql"
+    volumes:
+      - .:/var/www/html
+  mysql:
+    image: mysql:5.5
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: pw
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+  solr:
+    build: docker-images/solr
+  cache:
+    image: redis:latest
+  fullpagecache:
+    image: redis:latest
+  sessions:
+    image: redis:latest

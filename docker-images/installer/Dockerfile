@@ -47,6 +47,7 @@ RUN chmod +x /bin/install.sh
 # Install magerun
 RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
     chmod +x ./magerun && \
+    ./magerun selfupdate && \
     cp ./magerun /usr/local/bin/ && \
     rm ./magerun && \
     apt-get update && \

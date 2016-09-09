@@ -6,6 +6,8 @@
   "require": {
     "aoepeople/aoe_scheduler": "v0.4.3",
     "aschroder/smtp_pro": "v2.0.5",
+    "avstudnitz/scopehint": "^0.6",
+    "aydin-hassan/magento-core-composer-installer": "v1.3.0",
     "gordonlesti/lesti_fpc": "1.3.6",
     "jeroenvermeulen/solarium": "v1.6.9-beta",
     "magento-hackathon/magento-composer-installer": "3.0.6",
@@ -14,13 +16,16 @@
   "require-dev": {
     "aoepeople/aoe_profiler": "v0.3.0",
     "aoepeople/aoe_templatehints": "v0.4.1",
-    "avstudnitz/scopehint": "dev-master#9fd3eb0978fa67b55f5756494569746119f3f2f6",
     "tim-reynolds/magento-qconfig": "1.0"
   },
   "repositories": [
     {
       "type": "composer",
       "url": "https://packages.firegento.com"
+    },
+    {
+        "type": "vcs",
+        "url": "git@github.com:AydinHassan/magento-community.git"
     }
   ],
   "extra": {
