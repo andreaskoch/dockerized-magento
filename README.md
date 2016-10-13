@@ -123,12 +123,12 @@ You can control the project using the built-in `magento`-script which is basical
 The dockerized Magento project consists of the following components:
 
 - **[docker images](docker-images)**
-  1. a [php 5.5](docker-images/php/5.5/Dockerfile) image
-  2. a [nginx](docker-images/nginx/Dockerfile) web server image
-  3. a [solr](docker-images/solr/Dockerfile) search server
-  4. a standard [mysql](https://registry.hub.docker.com/_/mysql/) database server image
-  5. multiple instances of the standard [redis](https://registry.hub.docker.com/_/redis/) docker image
-  6. and an [installer](docker-images/installer/Dockerfile) image which contains all tools for installing the project from scratch using an [install script](docker-images/installer/bin/install.sh)
+  1. a [PHP](docker-images/php/Dockerfile) image
+  2. a [Nginx](docker-images/nginx/Dockerfile) web server image
+  3. a [Solr](docker-images/solr/Dockerfile) search server
+  4. a standard [MySQL](https://registry.hub.docker.com/_/mysql/) database server image
+  5. multiple instances of the standard [Redis](https://registry.hub.docker.com/_/redis/) docker image
+  6. and a [Installer](docker-images/installer/Dockerfile) image which contains all tools for installing the project from scratch using an [install script](docker-images/installer/bin/install.sh)
 - a **[shell script](magento)** for controlling the project: [`./magento <action>`](magento)
 - a [composer-file](composer.json) for managing the **Magento modules**
 - and the [docker-compose.yml](docker-compose.yml)-file which connects all components

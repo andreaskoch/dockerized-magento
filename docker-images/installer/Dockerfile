@@ -22,10 +22,6 @@ RUN buildDeps=" \
     zip \
     && apt-get purge -y --auto-remove
 
-COPY php/php.ini /usr/local/etc/php/php.ini
-
-ENV INSTALLER_VERSION 1.0.0
-
 # Install Tools
 RUN apt-get update && \
     apt-get install -y \
@@ -36,14 +32,6 @@ RUN apt-get update && \
     zip && \
     apt-get purge -y --auto-remove
 
-# Add utility scripts
-COPY bin/substitute-env-vars.sh /bin/substitute-env-vars.sh
-RUN chmod +x /bin/substitute-env-vars.sh
-
-# Add the Installer
-COPY bin/install.sh /bin/install.sh
-RUN chmod +x /bin/install.sh
-
 # Install magerun
 RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
     chmod +x ./magerun && \
@@ -53,14 +41,5 @@ RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/
     apt-get install -qy mysql-client && \
     apt-get purge -y --auto-remove
 
-# Add a custom magerun configuration
-COPY magerun/n98-magerun.yaml.tmpl /etc/n98-magerun.yaml.tmpl
-
-# Add custom Magento configuration files
-COPY magento/local.xml.tmpl /etc/local.xml.tmpl
-COPY magento/fpc.xml.tmpl /etc/fpc.xml.tmpl
-
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=bin
-
-ENTRYPOINT ["/bin/install.sh"]
