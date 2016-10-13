@@ -1,5 +1,5 @@
 installer:
-  build: docker-images/installer
+  image: andreaskoch/dockerized-magento-installer
   environment:
     DOMAIN: dockerized-magento.local
     MAGENTO_ROOT: /var/www/html/web
@@ -16,12 +16,21 @@ installer:
     ENCRYPTIONKEY: 731aea833710535779fe8c7c49bc6c4d
   volumes_from:
     - nginx
+  volumes:
+    - ./config/installer/php/php.ini:/usr/local/etc/php/php.ini
+    - ./config/installer/magerun/n98-magerun.yaml.tmpl:/etc/n98-magerun.yaml.tmpl
+    - ./config/installer/magento/local.xml.tmpl:/etc/local.xml.tmpl
+    - ./config/installer/magento/fpc.xml.tmpl:/etc/fpc.xml.tmpl
+    - ./config/installer/bin/substitute-env-vars.sh:/bin/substitute-env-vars.sh
+    - ./config/installer/bin/install.sh:/bin/install.sh
   links:
     - "cache:rediscache"
     - "sessions:redissession"
     - "fullpagecache:redisfullpagecache"
     - "solr:solr"
     - "mysql:mysql"
+  entrypoint: /bin/install.sh
+
 nginx:
   image: nginx:latest
   ports:
@@ -40,7 +49,7 @@ nginx:
   volumes_from:
     - php
 php:
-  build: docker-images/php
+  image: andreaskoch/dockerized-magento-php
   links:
     - "cache:rediscache"
     - "sessions:redissession"
@@ -58,7 +67,7 @@ mysql:
   volumes:
     - ./data/mysql:/var/lib/mysql
 solr:
-  build: docker-images/solr
+  image: andreaskoch/dockerized-magento-solr
 cache:
   image: redis:latest
 fullpagecache:

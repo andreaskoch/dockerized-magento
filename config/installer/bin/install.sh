@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 #####################################
 # Update the Magento Installation
 # Arguments:
@@ -56,6 +58,9 @@ function runForever() {
 	done
 }
 
+# Fix the www-folder permissions
+chgrp -R 33 /var/www/html
+
 # Check if the MAGENTO_ROOT direcotry has been specified
 if [ -z "$MAGENTO_ROOT" ]
 then
@@ -99,11 +104,13 @@ substitute-env-vars.sh /etc /etc/fpc.xml.tmpl
 echo "Overriding Magento Configuration"
 cp -v /etc/local.xml /var/www/html/web/app/etc/local.xml
 cp -v /etc/fpc.xml /var/www/html/web/app/etc/fpc.xml
+chgrp -R 33 $MAGENTO_ROOT/app/etc
 
 echo "Installing Sample Data: Media"
 curl -s -L https://raw.githubusercontent.com/Vinai/compressed-magento-sample-data/1.9.1.0/compressed-no-mp3-magento-sample-data-1.9.1.0.tgz | tar xz -C /tmp
 cp -av /tmp/magento-sample-data-*/* $MAGENTO_ROOT
 rm -rf /tmp/magento-sample-data-*
+chgrp -R 33 $MAGENTO_ROOT
 
 echo "Installing Sample Data: Database"
 magerun --skip-root-check --root-dir="$MAGENTO_ROOT" db:create

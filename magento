@@ -134,7 +134,7 @@ enterContainer() {
 }
 
 start() {
-    $DOCKERCOMPOSE up -d && $DOCKERCOMPOSE logs
+    $DOCKERCOMPOSE up -d && $DOCKERCOMPOSE logs -f
 }
 
 stop() {
