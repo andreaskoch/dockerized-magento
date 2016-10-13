@@ -1,5 +1,5 @@
 installer:
-  build: docker-images/installer
+  image: andreaskoch/dockerized-magento-installer
   environment:
     DOMAIN: dockerized-magento.local
     MAGENTO_ROOT: /var/www/html/web
@@ -40,7 +40,7 @@ nginx:
   volumes_from:
     - php
 php:
-  build: docker-images/php
+  image: andreaskoch/dockerized-magento-php
   links:
     - "cache:rediscache"
     - "sessions:redissession"
@@ -58,7 +58,7 @@ mysql:
   volumes:
     - ./data/mysql:/var/lib/mysql
 solr:
-  build: docker-images/solr
+  image: andreaskoch/dockerized-magento-solr
 cache:
   image: redis:latest
 fullpagecache:
