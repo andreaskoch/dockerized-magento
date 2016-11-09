@@ -84,10 +84,16 @@ Once the installation is finished the installer will print the URL and the crede
 
 ```
 ...
-installer_1     | Frontend: http://dockerized-magento.local/
-installer_1     | Backend: http://dockerized-magento.local/admin
-installer_1     |  - Username: admin
-installer_1     |  - Password: password123
+installer_1      | phpMyAdmin: http://dockerized-magento.local:8080
+installer_1      |  - Username: root
+installer_1      |  - Password: pw
+installer_1      |
+installer_1      | Backend: http://dockerized-magento.local/admin
+installer_1      |  - Username: admin
+installer_1      |  - Password: password123
+installer_1      |
+installer_1      | Frontend: http://dockerized-magento.local/
+
 ```
 
 [![Animation: Installation and first project start](documentation/installation-and-first-start-animation.gif)](https://s3.amazonaws.com/andreaskoch/dockerized-magento/installation/Dockerized-Magento-Installation-Linux-no-sound.mp4)
@@ -126,9 +132,10 @@ The dockerized Magento project consists of the following components:
   1. a [PHP](docker-images/php/Dockerfile) image
   2. a [Nginx](docker-images/nginx/Dockerfile) web server image
   3. a [Solr](docker-images/solr/Dockerfile) search server
-  4. a standard [MySQL](https://registry.hub.docker.com/_/mysql/) database server image
-  5. multiple instances of the standard [Redis](https://registry.hub.docker.com/_/redis/) docker image
-  6. and a [Installer](docker-images/installer/Dockerfile) image which contains all tools for installing the project from scratch using an [install script](docker-images/installer/bin/install.sh)
+  4. a standard [MySQL](https://hub.docker.com/_/mysql/) database server image
+  5. multiple instances of the standard [Redis](https://hub.docker.com/_/redis/) docker image
+	6. a standard [phpMyAdmin](https://hub.docker.com/r/phpmyadmin/phpmyadmin/) image that allows you to access the database on port 8080
+  7. and a [Installer](docker-images/installer/Dockerfile) image which contains all tools for installing the project from scratch using an [install script](docker-images/installer/bin/install.sh)
 - a **[shell script](magento)** for controlling the project: [`./magento <action>`](magento)
 - a [composer-file](composer.json) for managing the **Magento modules**
 - and the [docker-compose.yml](docker-compose.yml)-file which connects all components
