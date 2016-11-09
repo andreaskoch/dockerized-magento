@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add a phyMyAdmin container
 
+### Changed
+- Update AOE Scheduler to version "^1"
+- Reference major versions for SMTP Pro, Lesti FPC, Magento Core, AOE Template hints and Scope Hint
+
 ## [v0.11.0] - 2016-11-09
 
 ### Changed
