@@ -8,3 +8,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Allow access to the Magento Connect Manager (see issue #29)
+- Move the scope hint and qconfig modules to the normal requirements (see pull request #27)

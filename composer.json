@@ -4,6 +4,8 @@
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/andreaskoch/dockerized-magento",
   "require": {
+    "avstudnitz/scopehint": "^0.6",
+    "tim-reynolds/magento-qconfig": "1.0",
     "aoepeople/aoe_scheduler": "^1",
     "aschroder/smtp_pro": "^2",
     "gordonlesti/lesti_fpc": "^1",
@@ -15,9 +17,7 @@
   },
   "require-dev": {
     "aoepeople/aoe_profiler": "v0.3.0",
-    "aoepeople/aoe_templatehints": "^0.4",
-    "avstudnitz/scopehint": "^0.6",
-    "tim-reynolds/magento-qconfig": "1.0"
+    "aoepeople/aoe_templatehints": "^0.4"
   },
   "repositories": [
     {
