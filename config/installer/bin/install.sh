@@ -26,10 +26,16 @@ function printLogonInformation() {
 	frontendUrl="$baseUrl/"
 	backendUrl="$baseUrl/admin"
 
-	echo "Frontend: $frontendUrl"
+	echo ""
+	echo "phpMyAdmin: $baseUrl:8080"
+	echo " - Username: ${MYSQL_USER}"
+	echo " - Password: ${MYSQL_PASSWORD}"
+	echo ""
 	echo "Backend: $backendUrl"
 	echo " - Username: ${ADMIN_USERNAME}"
 	echo " - Password: ${ADMIN_PASSWORD}"
+	echo ""
+	echo "Frontend: $frontendUrl"
 }
 
 
