@@ -1,0 +1,11 @@
+{
+    "package": {
+        "name": "andreaskoch/dockerized-magento-skeleton",
+        "version": "0.1",
+        "source": {
+          "url": "https://github.com/stefanorg/dockerized-magento",
+          "type": "git",
+          "reference": "master"
+        }
+    }
+}
