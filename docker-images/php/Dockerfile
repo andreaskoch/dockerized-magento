@@ -23,7 +23,8 @@ RUN buildDeps=" \
     zip \
     && apt-get update -qy && apt-get install -qy git-core \
     && cd /tmp/ && git clone https://github.com/derickr/xdebug.git \
-    && cd xdebug && phpize && ./configure --enable-xdebug && make \
+    && cd xdebug && git reset bbf77a0a6a63b18e834006a7b162808045aad728 --hard \
+    && phpize && ./configure --enable-xdebug && make \
     && mkdir /usr/lib/php5/ && cp modules/xdebug.so /usr/lib/php5/xdebug.so \
     && touch /usr/local/etc/php/ext-xdebug.ini \
     && rm -r /tmp/xdebug && apt-get purge -y git-core \
