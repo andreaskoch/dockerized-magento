@@ -44,3 +44,16 @@ RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/
     rm ./magerun && \
     apt-get update && \
     apt-get install -qy mysql-client
+
+# Install cron
+RUN apt-get update && \
+    apt-get install -qy cron
+
+COPY magento-crontab /etc/magento-crontab
+
+RUN crontab /etc/magento-crontab
+
+COPY bin/ /usr/local/bin/
+
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["php-fpm"]

@@ -1,0 +1,5 @@
+#!/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+* * * * * ! test -e /var/www/html/web/maintenance.flag && /bin/bash /var/www/html/web/scheduler_cron.sh --mode always
+* * * * * ! test -e /var/www/html/web/maintenance.flag && /bin/bash /var/www/html/web/scheduler_cron.sh --mode default
