@@ -24,7 +24,7 @@ fi
 PROJECTPATH=$(dirname "$SCRIPTPATH")
 
 # Switch into the project directory
-cd $PROJECTPATH
+cd "$PROJECTPATH"
 
 # Mandatory Tools
 DOCKER=`which docker`
@@ -134,20 +134,20 @@ enterContainer() {
 }
 
 start() {
-    $DOCKERCOMPOSE up -d && $DOCKERCOMPOSE logs -f
+    "$DOCKERCOMPOSE" up -d && "$DOCKERCOMPOSE" logs -f
 }
 
 stop() {
-    $DOCKERCOMPOSE stop
+    "$DOCKERCOMPOSE" stop
 }
 
 restart() {
-    $DOCKERCOMPOSE restart
+    "$DOCKERCOMPOSE" restart
     executeMagerun cache:clean
 }
 
 status() {
-    $DOCKERCOMPOSE ps
+    "$DOCKERCOMPOSE" ps
 }
 
 stats() {
@@ -174,8 +174,8 @@ enter() {
 }
 
 destroy() {
-    $DOCKERCOMPOSE stop
-    $DOCKERCOMPOSE rm --force
+    "$DOCKERCOMPOSE" stop
+    "$DOCKERCOMPOSE" rm --force
     rm -rf $PROJECTPATH/web $PROJECTPATH/db $PROJECTPATH/vendor
 }
 
