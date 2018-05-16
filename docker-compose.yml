@@ -23,6 +23,7 @@ installer:
     - ./config/installer/magento/fpc.xml.tmpl:/etc/fpc.xml.tmpl
     - ./config/installer/bin/substitute-env-vars.sh:/bin/substitute-env-vars.sh
     - ./config/installer/bin/install.sh:/bin/install.sh
+    - ./config/installer/bin/update-mysql.sql:/bin/update-mysql.sql
   links:
     - "cache:rediscache"
     - "sessions:redissession"
