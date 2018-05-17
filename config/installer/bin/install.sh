@@ -124,6 +124,9 @@ databaseFilePath="$MAGENTO_ROOT/*.sql"
 magerun --skip-root-check --root-dir="$MAGENTO_ROOT" db:import $databaseFilePath
 rm $databaseFilePath
 
+echo "Updating mysql tables to add columns. See update-mysql.sql"
+magerun --skip-root-check --root-dir="$MAGENTO_ROOT" db:import /bin/update-mysql.sql
+
 echo "Installing Sample Data: Reindex"
 magerun --skip-root-check --root-dir="$MAGENTO_ROOT" cache:clean
 magerun --skip-root-check --root-dir="$MAGENTO_ROOT" index:reindex:all
