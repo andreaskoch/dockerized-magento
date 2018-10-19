@@ -64,6 +64,7 @@ mysql:
     - "3306:3306"
   environment:
     MYSQL_ROOT_PASSWORD: pw
+  command: mysqld --innodb-use-native-aio=0
   volumes:
     - ./data/mysql:/var/lib/mysql
 solr:
